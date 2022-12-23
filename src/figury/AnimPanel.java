@@ -25,7 +25,7 @@ public class AnimPanel extends JPanel implements ActionListener {
 
 	private int delay = 70;
 
-	private Timer timer;
+	static Timer timer;
 
 	private static int numer = 0;
 
@@ -51,6 +51,7 @@ public class AnimPanel extends JPanel implements ActionListener {
 				: new Elipsa(buffer, delay, getWidth(), getHeight());
 		timer.addActionListener(fig);
 		new Thread(fig).start();
+
 	}
 
 	void animate() {

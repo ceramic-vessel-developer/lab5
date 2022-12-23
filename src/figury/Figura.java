@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -37,6 +39,7 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 	private int width;
 	private int height;
 	private Color clr;
+	private int licznik;
 
 	protected static final Random rand = new Random();
 
@@ -66,17 +69,23 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 
 		while (true) {
 			// przygotowanie nastepnego kadru
-			shape = nextFrame();
+			try {
+				shape = nextFrame();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
-	protected Shape nextFrame() {
+	protected Shape nextFrame() throws InterruptedException {
 		// zapamietanie na zmiennej tymczasowej
 		// aby nie przeszkadzalo w wykreslaniu
+		licznik = licznik +1;
 		area = new Area(area);
 		aft = new AffineTransform();
 		Rectangle bounds = area.getBounds();
@@ -92,14 +101,21 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 			sf = 1 / sf;
 		// konstrukcja przeksztalcenia
 		aft.translate(cx, cy);
-		aft.scale(sf, sf);
-		aft.rotate(an);
+//		aft.scale(sf, sf);
+//		aft.rotate(an);
 		aft.translate(-cx, -cy);
 		aft.translate(dx, dy);
 		// przeksztalcenie obiektu
 		area.transform(aft);
+		if(licznik == 10) {
+			AnimPanel.timer.removeActionListener(this);
+			Thread.currentThread().join();
+		}
 		return area;
 	}
+
+
+	abstract void collision();
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
