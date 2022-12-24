@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -29,6 +30,8 @@ public class AnimPanel extends JPanel implements ActionListener {
 
 	private static int numer = 0;
 
+	private Random rand = new Random();
+
 	public AnimPanel() {
 		super();
 		setBackground(Color.WHITE);
@@ -47,10 +50,11 @@ public class AnimPanel extends JPanel implements ActionListener {
 	}
 
 	void addFig() {
-		Figura fig = (numer++ % 2 == 0) ? new UranUnstable(buffer, delay, getWidth(), getHeight(),0,0,40,40,this)
-				: new Neutron(buffer, delay, getWidth(), getHeight(),0,0,10,10,this);
+		Figura fig = (numer++ % 2 == 0) ? new UranUnstable(buffer, delay, getWidth(), getHeight(), rand.nextInt(1400), rand.nextInt(730),40,40,this)
+				: new Neutron(buffer, delay, getWidth(), getHeight(),rand.nextInt(1400),rand.nextInt(730),10,10,this);
 		timer.addActionListener(fig);
 		new Thread(fig).start();
+		System.out.printf("height: %d   width: %d\n",getHeight(),getWidth());
 
 	}
 
@@ -60,6 +64,9 @@ public class AnimPanel extends JPanel implements ActionListener {
 			fig = new Neutron(buffer, delay, getWidth(), getHeight(),x,y,10,10,this);
 		}else if(figure == Figures.URAN){
 			fig = new UranStable(buffer, delay, getWidth(), getHeight(),x,y,40,40,this);
+		}
+		else if(figure == Figures.URAN_UNSTABLE){
+			fig = new UranUnstable(buffer, delay, getWidth(), getHeight(),x,y,40,40,this);
 		}
 		timer.addActionListener(fig);
 		new Thread(fig).start();

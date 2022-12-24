@@ -1,5 +1,5 @@
 package figury;
 
 public enum Figures {
-    URAN,NEUTRON;
+    URAN,NEUTRON,URAN_UNSTABLE;
 }

@@ -28,7 +28,7 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 	protected Shape shape;
 	// przeksztalcenie obiektu
 	protected AffineTransform aft;
-
+	protected int licznik;
 	// przesuniecie
 	private double dx, dy;
 	// rozciaganie
@@ -39,7 +39,6 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 	private int width;
 	private int height;
 	public Color clr;
-	private int licznik;
 	public AnimPanel kanwa;
 
 	protected static final Random rand = new Random();
@@ -56,7 +55,7 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 		sf = 1 + 0.05 * rand.nextDouble();
 		an = 0.1 * rand.nextDouble();
 
-		clr = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+//		clr = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 		// reszta musi być zawarta w realizacji klasy Figure
 		// (tworzenie figury i przygotowanie transformacji)
 
@@ -64,8 +63,6 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 
 	@Override
 	public void run() {
-		// przesuniecie na srodek
-		aft.translate(100, 100);
 		area.transform(aft);
 		shape = area;
 
@@ -85,14 +82,17 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 	}
 
 	protected Shape nextFrame() throws InterruptedException {
+		licznik++;
 		// zapamietanie na zmiennej tymczasowej
 		// aby nie przeszkadzalo w wykreslaniu
-		licznik = licznik +1;
 		area = new Area(area);
 		aft = new AffineTransform();
 		Rectangle bounds = area.getBounds();
 		int cx = bounds.x + bounds.width / 2;
 		int cy = bounds.y + bounds.height / 2;
+		if(licznik == 1){
+			System.out.printf("cx: %d   cy: %d  bound.x: %d    bound.y: %d    bound.height: %d     bound.width:  %d\n",cx,cy,bounds.x,bounds.y,bounds.height,bounds.width);
+		}
 		// odbicie
 		if (cx < 0 || cx > width)
 			dx = -dx;
@@ -110,11 +110,6 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 		// przeksztalcenie obiektu
 		area.transform(aft);
 		detect_collision();
-//		if(licznik == 10) {
-//			kanwa.timer.removeActionListener(this);
-//			Thread.currentThread().join();
-//		}
-//		System.out.printf("%d     %d\n",cx,cy);
 		return area;
 	}
 
@@ -136,7 +131,7 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 		area = new Area(area);
 		Rectangle bounds = area.getBounds();
 
-		return new int[]{bounds.x+ bounds.width / 2, bounds.y, bounds.width, bounds.height};
+		return new int[]{bounds.x , bounds.y, bounds.width, bounds.height};
 	}
 
 }

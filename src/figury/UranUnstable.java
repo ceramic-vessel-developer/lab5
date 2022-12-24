@@ -22,7 +22,7 @@ public class UranUnstable extends Figura{
         exists.add(this);
     }
 
-    public void collision() throws InterruptedException {
+    public void collision(){
         exists.remove(this);
         int[] coord = get_position();
         kanwa.addFig(coord[0],coord[1],Figures.NEUTRON);
@@ -30,9 +30,8 @@ public class UranUnstable extends Figura{
         kanwa.addFig(coord[0],coord[1],Figures.URAN);
         destroy();
     }
-    public void destroy() throws InterruptedException {
+    public void destroy(){
         kanwa.timer.removeActionListener(this);
-        Thread.currentThread().join();
     }
 
 }

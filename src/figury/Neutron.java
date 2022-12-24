@@ -17,24 +17,19 @@ public class Neutron extends Figura{
 
     @Override
     public void detect_collision() {
-        for (UranUnstable object:UranUnstable.exists) {
+        ArrayList <UranUnstable> lol = (ArrayList<UranUnstable>) UranUnstable.exists.clone();
+        for (UranUnstable object:lol) {
             int[] coordinates = object.get_position();
             if (shape.intersects(coordinates[0],coordinates[1],coordinates[2],coordinates[3] )){
                 System.out.println("TERAZ");
-                try {
-                    object.collision();
-                    destroy();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-
-                }
+                object.collision();
+                destroy();
             }
         }
 
     }
 
-    public void destroy() throws InterruptedException {
+    public void destroy(){
         kanwa.timer.removeActionListener(this);
-        Thread.currentThread().join();
     }
 }
