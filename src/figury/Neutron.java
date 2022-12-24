@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class Neutron extends Figura{
     public Neutron(Graphics2D buf, int del, int w, int h, int x, int y, int weight, int heightt, AnimPanel panel) {
@@ -16,17 +17,19 @@ public class Neutron extends Figura{
     }
 
     @Override
-    public void detect_collision() {
-        ArrayList <UranUnstable> lol = (ArrayList<UranUnstable>) UranUnstable.exists.clone();
-        for (UranUnstable object:lol) {
-            int[] coordinates = object.get_position();
-            if (shape.intersects(coordinates[0],coordinates[1],coordinates[2],coordinates[3] )){
-                System.out.println("TERAZ");
-                object.collision();
-                destroy();
+    public void detect_collision() throws NullPointerException {
+        ArrayList <UranUnstable> list = (ArrayList<UranUnstable>) UranUnstable.exists.clone();
+
+        for (UranUnstable object : list) {
+            if(object != null) {
+                int[] coordinates = object.get_position();
+                if (shape.intersects(coordinates[0], coordinates[1], coordinates[2], coordinates[3])) {
+                    object.collision();
+                    destroy();
+                    break;
+                }
             }
         }
-
     }
 
     public void destroy(){

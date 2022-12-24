@@ -11,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -28,13 +26,8 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 	protected Shape shape;
 	// przeksztalcenie obiektu
 	protected AffineTransform aft;
-	protected int licznik;
 	// przesuniecie
-	private double dx, dy;
-	// rozciaganie
-	private double sf;
-	// kat obrotu
-	private double an;
+	private int dx, dy;
 	private int delay;
 	private int width;
 	private int height;
@@ -50,15 +43,12 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 		height = h;
 		kanwa = panel;
 
-		dx = 1 + rand.nextDouble()*10 -5;
-		dy = 1 + rand.nextDouble()*10 -5;
-		sf = 1 + 0.05 * rand.nextDouble();
-		an = 0.1 * rand.nextDouble();
-
-//		clr = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-		// reszta musi być zawarta w realizacji klasy Figure
-		// (tworzenie figury i przygotowanie transformacji)
-
+		dx = 1 + rand.nextInt(10) -5;
+		dy = 1 + rand.nextInt(10) -5;
+		if (dx == 0 && dy ==0){
+			dx = 1;
+			dy = 1;
+		}
 	}
 
 	@Override
@@ -68,11 +58,7 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 
 		while (true) {
 			// przygotowanie nastepnego kadru
-			try {
-				shape = nextFrame();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			shape = nextFrame();
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
@@ -81,8 +67,7 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 		}
 	}
 
-	protected Shape nextFrame() throws InterruptedException {
-		licznik++;
+	protected Shape nextFrame(){
 		// zapamietanie na zmiennej tymczasowej
 		// aby nie przeszkadzalo w wykreslaniu
 		area = new Area(area);
@@ -90,29 +75,16 @@ public abstract class Figura implements Runnable, ActionListener/*, Shape*/ {
 		Rectangle bounds = area.getBounds();
 		int cx = bounds.x + bounds.width / 2;
 		int cy = bounds.y + bounds.height / 2;
-		if(licznik == 1){
-			System.out.printf("cx: %d   cy: %d  bound.x: %d    bound.y: %d    bound.height: %d     bound.width:  %d\n",cx,cy,bounds.x,bounds.y,bounds.height,bounds.width);
-		}
 		// odbicie
 		if (cx < 0 || cx > width)
 			dx = -dx;
 		if (cy < 0 || cy > height)
 			dy = -dy;
-		// zwiekszenie lub zmniejszenie
-		if (bounds.height > height / 3 || bounds.height < 10)
-			sf = 1 / sf;
-		// konstrukcja przeksztalcenia
-//		aft.translate(cx, cy);
-//		aft.scale(sf, sf);
-//		aft.rotate(an);
-//		aft.translate(-cx, -cy);
 		aft.translate(dx, dy);
-		// przeksztalcenie obiektu
 		area.transform(aft);
 		detect_collision();
 		return area;
 	}
-
 
 	public void detect_collision(){
 	}

@@ -28,10 +28,6 @@ public class AnimPanel extends JPanel implements ActionListener {
 
 	public Timer timer;
 
-	private static int numer = 0;
-
-	private Random rand = new Random();
-
 	public AnimPanel() {
 		super();
 		setBackground(Color.WHITE);
@@ -47,15 +43,6 @@ public class AnimPanel extends JPanel implements ActionListener {
 		buffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		device = (Graphics2D) getGraphics();
 		device.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	}
-
-	void addFig() {
-		Figura fig = (numer++ % 2 == 0) ? new UranUnstable(buffer, delay, getWidth(), getHeight(), rand.nextInt(1400), rand.nextInt(730),40,40,this)
-				: new Neutron(buffer, delay, getWidth(), getHeight(),rand.nextInt(1400),rand.nextInt(730),10,10,this);
-		timer.addActionListener(fig);
-		new Thread(fig).start();
-		System.out.printf("height: %d   width: %d\n",getHeight(),getWidth());
-
 	}
 
 	void addFig(int x, int y,Figures figure){

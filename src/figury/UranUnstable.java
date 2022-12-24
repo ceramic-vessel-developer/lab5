@@ -23,15 +23,12 @@ public class UranUnstable extends Figura{
     }
 
     public void collision(){
+        kanwa.timer.removeActionListener(this);
         exists.remove(this);
         int[] coord = get_position();
         kanwa.addFig(coord[0],coord[1],Figures.NEUTRON);
         kanwa.addFig(coord[0],coord[1],Figures.NEUTRON);
         kanwa.addFig(coord[0],coord[1],Figures.URAN);
-        destroy();
-    }
-    public void destroy(){
-        kanwa.timer.removeActionListener(this);
     }
 
 }

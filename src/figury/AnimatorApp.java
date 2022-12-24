@@ -39,6 +39,11 @@ public class AnimatorApp extends JFrame {
 	 * @param delay
 	 */
 	public AnimatorApp() {
+		JOptionPane.showMessageDialog(this,
+				"Legenda\n" +
+						"- Duże czerwone koło - niestabilne jądro Uranu\n" +
+						"- Duże niebieskie koło - stabilne jądro Uranu\n" +
+						"- Małe szare koło - neutron");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		int ww = 1500, wh = 900;
@@ -46,6 +51,7 @@ public class AnimatorApp extends JFrame {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("Poglądowa symulacja łańcuchowej reakcji rozpadu jąder Uranu");
 
 		AnimPanel kanwa = new AnimPanel();
 		kanwa.setBounds(10, 11, 1456, 780);
@@ -64,7 +70,7 @@ public class AnimatorApp extends JFrame {
 				kanwa.addFig(rand.nextInt(50),rand.nextInt(730),Figures.NEUTRON);
 			}
 		});
-		btnAdd.setBounds(10, 810, 80, 23);
+		btnAdd.setBounds(10, 810, 120, 23);
 		contentPane.add(btnAdd);
 		
 		JButton btnAnimate = new JButton("Animate");
@@ -73,12 +79,17 @@ public class AnimatorApp extends JFrame {
 				kanwa.animate();
 			}
 		});
-		btnAnimate.setBounds(100, 810, 80, 23);
+		btnAnimate.setBounds(140, 810, 120, 23);
 		contentPane.add(btnAnimate);
 
-		JSpinner spinnerQuantity = new JSpinner(new SpinnerNumberModel(10,1,200,1));
+		JSpinner spinnerQuantity = new JSpinner(new SpinnerNumberModel(10,1,150,1));
 		spinnerQuantity.setBounds(400, 810, 80, 23);
 		contentPane.add(spinnerQuantity);
+
+		JLabel label = new JLabel("(1 - 150)");
+		label.setLabelFor(spinnerQuantity);
+		label.setBounds(350,810,100,23);
+		contentPane.add(label);
 
 		JButton btnQuantity = new JButton("Add Uran");
 		btnQuantity.addActionListener(new ActionListener() {
@@ -91,9 +102,10 @@ public class AnimatorApp extends JFrame {
 				btnQuantity.setEnabled(false);
 			}
 		});
-		btnQuantity.setBounds(500, 810, 80, 23);
+		btnQuantity.setBounds(500, 810, 120, 23);
 		contentPane.add(btnQuantity);
-		
+
+
 	}
 
 }
