@@ -25,7 +25,7 @@ public class AnimPanel extends JPanel implements ActionListener {
 
 	private int delay = 70;
 
-	static Timer timer;
+	public Timer timer;
 
 	private static int numer = 0;
 
@@ -47,11 +47,22 @@ public class AnimPanel extends JPanel implements ActionListener {
 	}
 
 	void addFig() {
-		Figura fig = (numer++ % 2 == 0) ? new Kwadrat(buffer, delay, getWidth(), getHeight())
-				: new Elipsa(buffer, delay, getWidth(), getHeight());
+		Figura fig = (numer++ % 2 == 0) ? new UranUnstable(buffer, delay, getWidth(), getHeight(),0,0,40,40,this)
+				: new Neutron(buffer, delay, getWidth(), getHeight(),0,0,10,10,this);
 		timer.addActionListener(fig);
 		new Thread(fig).start();
 
+	}
+
+	void addFig(int x, int y,Figures figure){
+		Figura fig = null;
+		if (figure == Figures.NEUTRON){
+			fig = new Neutron(buffer, delay, getWidth(), getHeight(),x,y,10,10,this);
+		}else if(figure == Figures.URAN){
+			fig = new UranStable(buffer, delay, getWidth(), getHeight(),x,y,40,40,this);
+		}
+		timer.addActionListener(fig);
+		new Thread(fig).start();
 	}
 
 	void animate() {
